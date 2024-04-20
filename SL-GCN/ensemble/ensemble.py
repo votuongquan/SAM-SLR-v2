@@ -15,7 +15,7 @@ r3 = list(pickle.load(r3).items())
 r4 = open('./bone_motion_epoch_241_0.3126.pkl', 'rb')
 r4 = list(pickle.load(r4).items())
 
-alpha = [1.0,0.9,0.5,0.5] # 51.50
+alpha = [1.0, 0.9, 0.5, 0.5]  # 51.50
 
 right_num = total_num = right_num_5 = 0
 names = []
@@ -34,7 +34,8 @@ with open('predictions.csv', 'w') as f:
         name4, r44 = r4[i]
         assert name == name1 == name2 == name3 == name4
         mean += r11.mean()
-        score = (r11*alpha[0] + r22*alpha[1] + r33*alpha[2] + r44*alpha[3]) / np.array(alpha).sum()
+        score = (r11*alpha[0] + r22*alpha[1] + r33 *
+                 alpha[2] + r44*alpha[3]) / np.array(alpha).sum()
         rank_5 = score.argsort()[-5:]
         right_num_5 += int(int(l) in rank_5)
         r = np.argmax(score)
