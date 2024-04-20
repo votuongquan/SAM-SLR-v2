@@ -317,6 +317,9 @@ class Processor():
     def save_arg(self):
         # save arg
         arg_dict = vars(self.arg)
+        
+        if not os.path.exists(os.path.dirname(self.arg.model_saved_name)):
+            os.makedirs(os.path.dirname(self.arg.model_saved_name))
 
         if not os.path.exists(self.arg.work_dir):
             os.makedirs(self.arg.work_dir)
@@ -573,7 +576,7 @@ if __name__ == '__main__':
     p = parser.parse_args()
     if p.config is not None:
         with open(p.config, 'r') as f:
-            default_arg = yaml.load(f)
+            default_arg = yaml.load(f, Loader=yaml.FullLoader)
         key = vars(p).keys()
         for k in default_arg.keys():
             if k not in key:

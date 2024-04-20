@@ -34,10 +34,13 @@ def gendata(data_path, label_path, out_path, part='train', config='27'):
         line = line.split(',')
 
         sample_names.append(line[0])
-        data.append(os.path.join(data_path, line[0] + '_color.mp4.npy'))
-        # print(line[1])
-        labels.append(int(line[1]))
-        # print(labels[-1])
+        data.append(os.path.join(data_path, line[0] + '_.npy'))
+        print(line[0])
+        print(line[1])
+        if line[1].strip():
+            labels.append(int(line[1]))
+        else:
+            continue
 
     fp = np.zeros((len(data), max_frame, num_joints, num_channels, max_body_true), dtype=np.float32)
 
