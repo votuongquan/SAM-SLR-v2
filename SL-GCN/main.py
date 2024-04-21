@@ -19,6 +19,7 @@ import random
 import inspect
 import torch.backends.cudnn as cudnn
 import torch.nn.functional as F
+from sklearn.metrics import classification_report
 
 # class LabelSmoothingCrossEntropy(nn.Module):
 #     def __init__(self):
@@ -437,12 +438,16 @@ class Processor():
         torch.save(weights, self.arg.model_saved_name +
                    '-' + str(epoch) + '.pt')
 
-    def eval(self, epoch, save_score=False, loader_name=['test'], wrong_file=None, result_file=None):
+    def eval(self, epoch, save_score=False, loader_name=['test'], wrong_file=None, result_file=None, classify_report=False):
         if wrong_file is not None:
             f_w = open(wrong_file, 'w')
         if result_file is not None:
             f_r = open(result_file, 'w')
         self.model.eval()
+        
+        true_labels = []
+        pred_labels = []
+        
         with torch.no_grad():
             self.print_log('Eval epoch: {}'.format(epoch + 1))
             for ln in loader_name:
@@ -475,6 +480,9 @@ class Processor():
                     loss_value.append(loss.data.cpu().numpy())
 
                     _, predict_label = torch.max(output.data, 1)
+                    true_labels.extend(label.cpu().numpy())
+                    pred_labels.extend(predict_label.cpu().numpy())
+                    
                     step += 1
 
                     if wrong_file is not None or result_file is not None:
@@ -527,10 +535,24 @@ class Processor():
                 for k in self.arg.show_topk:
                     self.print_log('\tTop{}: {:.2f}%'.format(
                         k, 100 * self.data_loader[ln].dataset.top_k(score, k)))
+                    
 
                 with open('./work_dir/' + arg.Experiment_name + '/eval_results/epoch_' + str(epoch) + '_' + str(accuracy) + '.pkl'.format(
                         epoch, accuracy), 'wb') as f:
                     pickle.dump(score_dict, f)
+                    
+            if classify_report:
+                # Generate classification report
+                report = classification_report(true_labels, predicted_labels)
+
+                # Print or save the report
+                self.print_log("Classification Report:")
+                self.print_log(report)
+                
+                # Save the report
+                with open('./work_dir/' + arg.Experiment_name + '/eval_results/classification_report.txt', 'w') as f:
+                    f.write(report)
+                    
         return np.mean(loss_value)
 
     def start(self):
@@ -566,7 +588,7 @@ class Processor():
             self.print_log('Model:   {}.'.format(self.arg.model))
             self.print_log('Weights: {}.'.format(self.arg.weights))
             self.eval(epoch=self.arg.start_epoch, save_score=self.arg.save_score,
-                      loader_name=['test'], wrong_file=wf, result_file=rf)
+                      loader_name=['test'], wrong_file=wf, result_file=rf, classify_report=True)
             self.print_log('Done.\n')
 
 
