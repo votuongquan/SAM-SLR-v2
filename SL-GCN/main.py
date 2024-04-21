@@ -501,6 +501,20 @@ class Processor():
                     with open('./work_dir/' + arg.Experiment_name + '/eval_results/best_acc' + '.pkl'.format(
                             epoch, accuracy), 'wb') as f:
                         pickle.dump(score_dict, f)
+                        
+                    state_dict = self.model.state_dict()
+                    weights = OrderedDict(
+                        [
+                            [k.split("module.")[-1], v.cpu()]
+                            for k, v in state_dict.items()
+                        ]
+                    )
+                    save_dict = {
+                        "weights": weights,
+                        "optimizer": self.optimizer.state_dict(),
+                        "lr": self.lr,
+                    }
+                    torch.save(save_dict, self.arg.model_saved_name + "best_model.pt")
 
                 print('Eval Accuracy: ', accuracy,
                       ' model: ', self.arg.model_saved_name)
