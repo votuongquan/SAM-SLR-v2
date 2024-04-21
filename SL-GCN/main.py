@@ -32,6 +32,7 @@ import torch.nn.functional as F
 #         loss = confidence * nll_loss + smoothing * smooth_loss
 #         return loss.mean()
 
+
 def init_seed(_):
     torch.cuda.manual_seed_all(1)
     torch.manual_seed(1)
@@ -318,6 +319,9 @@ class Processor():
         # save arg
         arg_dict = vars(self.arg)
 
+        if not os.path.exists(os.path.dirname(self.arg.model_saved_name)):
+            os.makedirs(os.path.dirname(self.arg.model_saved_name))
+
         if not os.path.exists(self.arg.work_dir):
             os.makedirs(self.arg.work_dir)
             os.makedirs(self.arg.work_dir + '/eval_results')
@@ -481,7 +485,7 @@ class Processor():
                                 f_r.write(str(x) + ',' + str(true[i]) + '\n')
                             if x != true[i] and wrong_file is not None:
                                 f_w.write(str(index[i]) + ',' +
-                                        str(x) + ',' + str(true[i]) + '\n')
+                                          str(x) + ',' + str(true[i]) + '\n')
                 score = np.concatenate(score_frag)
 
                 if 'UCLA' in arg.Experiment_name:
@@ -499,7 +503,7 @@ class Processor():
                         pickle.dump(score_dict, f)
 
                 print('Eval Accuracy: ', accuracy,
-                    ' model: ', self.arg.model_saved_name)
+                      ' model: ', self.arg.model_saved_name)
 
                 score_dict = dict(
                     zip(self.data_loader[ln].dataset.sample_name, score))
@@ -513,10 +517,12 @@ class Processor():
                         epoch, accuracy), 'wb') as f:
                     pickle.dump(score_dict, f)
         return np.mean(loss_value)
+
     def start(self):
         if self.arg.phase == 'train':
             self.print_log('Parameters:\n{}\n'.format(str(vars(self.arg))))
-            self.global_step = int(self.arg.start_epoch * len(self.data_loader['train']) / self.arg.batch_size)
+            self.global_step = int(
+                self.arg.start_epoch * len(self.data_loader['train']) / self.arg.batch_size)
             for epoch in range(self.arg.start_epoch, self.arg.num_epoch):
                 save_model = ((epoch + 1) % self.arg.save_interval == 0) or (
                     epoch + 1 == self.arg.num_epoch)
@@ -573,7 +579,7 @@ if __name__ == '__main__':
     p = parser.parse_args()
     if p.config is not None:
         with open(p.config, 'r') as f:
-            default_arg = yaml.load(f, Loader= yaml.FullLoader)
+            default_arg = yaml.load(f, Loader=yaml.FullLoader)
         key = vars(p).keys()
         for k in default_arg.keys():
             if k not in key:
