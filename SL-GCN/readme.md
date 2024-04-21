@@ -18,24 +18,24 @@ Our pretrained models are provided [here](https://drive.google.com/drive/folders
 ## Usage
 ### Train WLASL:
 ```
-python main.py --config config/WLASL/train/train_joint.yaml
+python main.py --config config/VSL/train/train_joint.yaml
 
-python main.py --config config/WLASL/train/train_bone.yaml
+python main.py --config config/VSL/train/train_bone.yaml
 
-python main.py --config config/WLASL/train/train_joint_motion.yaml
+python main.py --config config/VSL/train/train_joint_motion.yaml
 
-python main.py --config config/WLASL/train/train_bone_motion.yaml
+python main.py --config config/VSL/train/train_bone_motion.yaml
 ```
 
 ### Test:
 ```
-python main.py --config config/WLASL/test/test_joint.yaml
+python main.py --config config/VSL/test/test_joint.yaml
 
-python main.py --config config/WLASL/test/test_bone.yaml
+python main.py --config config/VSL/test/test_bone.yaml
 
-python main.py --config config/WLASL/test/test_joint_motion.yaml
+python main.py --config config/VSL/test/test_joint_motion.yaml
 
-python main.py --config config/WLASL/test/test_bone_motion.yaml
+python main.py --config config/VSL/test/test_bone_motion.yaml
 ```
 
 ### Multi-stream ensemble:
