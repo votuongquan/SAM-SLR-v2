@@ -256,15 +256,15 @@ class Processor():
             else:
                 weights = torch.load(self.arg.weights)
 
-            # check weights is for gpu or cpu and change into gpu
+             # check weights is for gpu or cpu and change into gpu
             if 'state_dict' in weights.keys():
                 weights = weights['state_dict']
             if 'module' in list(weights.keys())[0]:
                 weights = OrderedDict([[k.split('module.')[-1],
-                                        v.cuda(output_device)] for k, v in weights.items()])
+                                        v.cuda(output_device) if torch.is_tensor(v) else v] for k, v in weights.items()])
             else:
-                weights = OrderedDict([[k, v.cuda(output_device)]
-                                      for k, v in weights.items()])
+                weights = OrderedDict([[k, v.cuda(output_device) if torch.is_tensor(v) else v]
+                                       for k, v in weights.items()])
 
             for w in self.arg.ignore_weights:
                 if weights.pop(w, None) is not None:
