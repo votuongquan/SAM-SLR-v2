@@ -256,8 +256,9 @@ class Processor():
             else:
                 weights = torch.load(self.arg.weights)
 
-             # check weights is for gpu or cpu and change into gpu
-            weights = weights.get('weights', self.arg.weights)
+            # get weights from a module
+            if 'weights' in weights:
+                weights = weights['weights']
 
             weights = OrderedDict(
                 [[k.split('module.')[-1],
