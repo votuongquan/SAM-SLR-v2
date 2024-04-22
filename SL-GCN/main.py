@@ -252,22 +252,22 @@ class Processor():
             self.print_log('Load weights from {}.'.format(self.arg.weights))
             if '.pkl' in self.arg.weights:
                 with open(self.arg.weights, 'r') as f:
-                    checkpoint = pickle.load(f)
+                    weights = pickle.load(f)
             else:
-                checkpint = torch.load(self.arg.weights)
+                weights = torch.load(self.arg.weights)
 
              # check weights is for gpu or cpu and change into gpu
-                model_weights = checkpoint.get('weights', checkpoint)
+                weights = weights.get('weights', weights)
 
                 # check weights is for gpu or cpu and change into gpu
-                if 'state_dict' in model_weights.keys():
-                    model_weights = model_weights['state_dict']
+                if 'state_dict' in weights.keys():
+                    weights = weights['state_dict']
                 if 'module' in list(model_weights.keys())[0]:
-                    model_weights = OrderedDict([[k.split('module.')[-1],
-                                            v.cuda(output_device) if torch.is_tensor(v) else v] for k, v in model_weights.items()])
+                    weights = OrderedDict([[k.split('module.')[-1],
+                                            v.cuda(output_device) if torch.is_tensor(v) else v] for k, v in weights.items()])
                 else:
-                    model_weights = OrderedDict([[k, v.cuda(output_device) if torch.is_tensor(v) else v]
-                                        for k, v in model_weights.items()])
+                    weights = OrderedDict([[k, v.cuda(output_device) if torch.is_tensor(v) else v]
+                                        for k, v in weights.items()])
 
             for w in self.arg.ignore_weights:
                 if weights.pop(w, None) is not None:
