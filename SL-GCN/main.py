@@ -255,6 +255,8 @@ class Processor():
                     weights = pickle.load(f)
             else:
                 weights = torch.load(self.arg.weights)['weights']
+                
+            print('Weights: ', weights.keys())
 
             weights = OrderedDict(
                 [[k.split('module.')[-1],
