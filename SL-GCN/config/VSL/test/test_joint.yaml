@@ -41,7 +41,7 @@ step: [150, 200]
 # test
 device: [0]
 phase: test
-weights: save_models/csl_joint-242.pt
+weights: save_models/vsl_joint_best_model.pt
 start_epoch: 242
 keep_rate: 0.9
 only_train_epoch: 1

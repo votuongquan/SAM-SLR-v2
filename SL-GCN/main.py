@@ -482,6 +482,8 @@ class Processor():
                     _, predict_label = torch.max(output.data, 1)
                     true_labels.extend(label.cpu().numpy())
                     pred_labels.extend(predict_label.cpu().numpy())
+                    # Generate classification report
+                    report = classification_report(true_labels, predicted_labels)
                     
                     step += 1
 
@@ -524,6 +526,9 @@ class Processor():
                     }
                     torch.save(
                         save_dict, self.arg.model_saved_name + "_best_model.pt")
+                    
+                    with open('./work_dir/' + arg.Experiment_name + '/eval_results/classification_report.txt', 'w') as f:
+                        f.write(report)
 
                 print('Eval Accuracy: ', accuracy,
                       ' model: ', self.arg.model_saved_name)
@@ -542,17 +547,11 @@ class Processor():
                     pickle.dump(score_dict, f)
                     
             if classify_report:
-                # Generate classification report
-                report = classification_report(true_labels, predicted_labels)
-
                 # Print or save the report
-                self.print_log("Classification Report:")
-                self.print_log(report)
+                print("Classification Report:")
+                print(report)
                 
-                # Save the report
-                with open('./work_dir/' + arg.Experiment_name + '/eval_results/classification_report.txt', 'w') as f:
-                    f.write(report)
-                    
+
         return np.mean(loss_value)
 
     def start(self):
