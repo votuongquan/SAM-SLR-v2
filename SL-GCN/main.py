@@ -255,6 +255,8 @@ class Processor():
                     weights = pickle.load(f)
             else:
                 weights = torch.load(self.arg.weights)
+                
+            print('weights:', weights.keys())
 
             # get weights from a module
             if 'weights' in weights:
