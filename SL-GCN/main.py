@@ -483,7 +483,7 @@ class Processor():
                     true_labels.extend(label.cpu().numpy())
                     pred_labels.extend(predict_label.cpu().numpy())
                     # Generate classification report
-                    report = classification_report(true_labels, pred_labels)
+                    report = classification_report(true_labels, pred_labels, zero_division=1)
                     
                     step += 1
 
