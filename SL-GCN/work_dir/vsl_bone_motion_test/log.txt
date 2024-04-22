@@ -1,0 +1,1 @@
+[ Mon Apr 22 10:49:21 2024 ] Load weights from save_models/vsl_bone_motion_best_model.pt.
