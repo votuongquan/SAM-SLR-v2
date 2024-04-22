@@ -249,14 +249,16 @@ class Processor():
         # self.loss = LabelSmoothingCrossEntropy().cuda(output_device)
 
         if self.arg.weights:
-            self.print_log('Load weights from {}.'.format(self.arg.weights))
-            if '.pkl' in self.arg.weights:
-                with open(self.arg.weights, 'r') as f:
+            self.print_log("Load weights from {}.".format(self.arg.weights))
+            if ".pkl" in self.arg.weights:
+                with open(self.arg.weights, "r") as f:
                     weights = pickle.load(f)
             else:
-                weights = torch.load(self.arg.weights)['weights']
-                
-            print('Weights: ', weights.keys())
+                ckpt = torch.load(self.arg.weights)
+                if "weights" in ckpt.keys():
+                    weights = torch.load(self.arg.weights)["weights"]
+                else:
+                    weights = ckpt
 
             weights = OrderedDict(
                 [[k.split('module.')[-1],
@@ -516,8 +518,8 @@ class Processor():
                         pickle.dump(score_dict, f)
 
                     state_dict = self.model.state_dict()
-                    weights = OrderedDict([[k.split('module.')[-1], v.cuda(output_device) if isinstance(
-                        v, torch.Tensor) else v] for k, v in weights.items()])
+                    weights = OrderedDict([[k.split('module.')[-1],
+                                v.cpu()] for k, v in state_dict.items()])
 
                     save_dict = {
                         "weights": weights,
