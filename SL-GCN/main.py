@@ -256,9 +256,15 @@ class Processor():
             else:
                 weights = torch.load(self.arg.weights)
 
-            weights = OrderedDict(
-                [[k.split('module.')[-1],
-                  v.cuda(output_device)] for k, v in weights.items()])
+            # check weights is for gpu or cpu and change into gpu
+            if 'state_dict' in weights.keys():
+                weights = weights['state_dict']
+            if 'module' in list(weights.keys())[0]:
+                weights = OrderedDict([[k.split('module.')[-1],
+                                        v.cuda(output_device)] for k, v in weights.items()])
+            else:
+                weights = OrderedDict([[k, v.cuda(output_device)]
+                                      for k, v in weights.items()])
 
             for w in self.arg.ignore_weights:
                 if weights.pop(w, None) is not None:
@@ -444,10 +450,10 @@ class Processor():
         if result_file is not None:
             f_r = open(result_file, 'w')
         self.model.eval()
-        
+
         true_labels = []
         pred_labels = []
-        
+
         with torch.no_grad():
             self.print_log('Eval epoch: {}'.format(epoch + 1))
             for ln in loader_name:
@@ -483,8 +489,9 @@ class Processor():
                     true_labels.extend(label.cpu().numpy())
                     pred_labels.extend(predict_label.cpu().numpy())
                     # Generate classification report
-                    report = classification_report(true_labels, pred_labels, zero_division=1)
-                    
+                    report = classification_report(
+                        true_labels, pred_labels, zero_division=1)
+
                     step += 1
 
                     if wrong_file is not None or result_file is not None:
@@ -513,12 +520,9 @@ class Processor():
                         pickle.dump(score_dict, f)
 
                     state_dict = self.model.state_dict()
-                    weights = OrderedDict(
-                        [
-                            [k.split("module.")[-1], v.cpu()]
-                            for k, v in state_dict.items()
-                        ]
-                    )
+                    weights = OrderedDict([[k.split('module.')[-1], v.cuda(output_device) if isinstance(
+                        v, torch.Tensor) else v] for k, v in weights.items()])
+
                     save_dict = {
                         "weights": weights,
                         "optimizer": self.optimizer.state_dict(),
@@ -526,7 +530,7 @@ class Processor():
                     }
                     torch.save(
                         save_dict, self.arg.model_saved_name + "_best_model.pt")
-                    
+
                     with open('./work_dir/' + arg.Experiment_name + '/eval_results/classification_report.txt', 'w') as f:
                         f.write(report)
 
@@ -540,17 +544,15 @@ class Processor():
                 for k in self.arg.show_topk:
                     self.print_log('\tTop{}: {:.2f}%'.format(
                         k, 100 * self.data_loader[ln].dataset.top_k(score, k)))
-                    
 
                 with open('./work_dir/' + arg.Experiment_name + '/eval_results/epoch_' + str(epoch) + '_' + str(accuracy) + '.pkl'.format(
                         epoch, accuracy), 'wb') as f:
                     pickle.dump(score_dict, f)
-                    
+
             if classify_report:
                 # Print or save the report
                 print("Classification Report:")
                 print(report)
-                
 
         return np.mean(loss_value)
 
