@@ -112,7 +112,7 @@ print("Ground Truth: ", label[1, index])
 y_true = [int(l) for _, l in label.T]
 y_pred = preds
 print("Classification Report")
-print(classification_report(y_true, y_pred))
+print(classification_report(y_true, y_pred, zero_division=1))
 
 # save classification report
 with open('./ensemble_classification_report.txt', 'w') as f:
