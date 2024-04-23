@@ -4,15 +4,15 @@ import pickle
 import numpy as np
 from tqdm import tqdm
 
-label = open('./val_label.pkl', 'rb')
+label = open('/kaggle/input/dataset-for-slr-v2/27/test_label.pkl', 'rb')
 label = np.array(pickle.load(label))
-r1 = open('./joint_epoch_222_0.4561.pkl', 'rb')
+r1 = open('/kaggle/working/SAM-SLR-v2/SL-GCN/work_dir/vsl_joint/eval_results/best_acc.pkl', 'rb')
 r1 = list(pickle.load(r1).items())
-r2 = open('./bone_epoch_237_0.4327.pkl', 'rb')
+r2 = open('/kaggle/working/SAM-SLR-v2/SL-GCN/work_dir/vsl_bone/eval_results/best_acc.pkl', 'rb')
 r2 = list(pickle.load(r2).items())
-r3 = open('./joint_motion_epoch_245_0.2723.pkl', 'rb')
+r3 = open('/kaggle/working/SAM-SLR-v2/SL-GCN/work_dir/vsl_joint_motion/eval_results/best_acc.pkl', 'rb')
 r3 = list(pickle.load(r3).items())
-r4 = open('./bone_motion_epoch_241_0.3126.pkl', 'rb')
+r4 = open('/kaggle/working/SAM-SLR-v2/SL-GCN/work_dir/vsl_bone_motion/eval_results/best_acc.pkl', 'rb')
 r4 = list(pickle.load(r4).items())
 
 alpha = [1.0, 0.9, 0.5, 0.5]  # 51.50
