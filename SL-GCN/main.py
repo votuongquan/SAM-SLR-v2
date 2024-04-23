@@ -520,7 +520,7 @@ class Processor():
 
                     state_dict = self.model.state_dict()
                     weights = OrderedDict([[k.split('module.')[-1],
-                                v.cpu()] for k, v in state_dict.items()])
+                                            v.cpu()] for k, v in state_dict.items()])
 
                     save_dict = {
                         "weights": weights,
@@ -554,31 +554,43 @@ class Processor():
                 print(report)
 
         return np.mean(loss_value)
-    
-    def save_model_to_bin(self, filename):
+
+    def save_model_to_bin(self, filename='pytorch_model.bin'):
         # Save the state_dict of the model to work_dir folder
         state_dict = self.model.state_dict()
         torch.save(state_dict, filename)
-        
-    def save_config_to_json(self, filename):
+
+        # move the model file to the work_dir
+        shutil.move(filename, self.arg.work_dir + '/' + filename)
+
+    def save_processor_config_to_json(self, filename='processor_config.json'):
         # Extract configuration parameters
         config_dict = vars(self.arg)
-    
+
         # Save configuration to JSON file
         with open(filename, 'w') as f:
-            json.dump(config_dict, f, indent=4)
-            
-    def save_configs_to_json(self, filename):
+            json.dump(config_dict, f, indent=4, sort_keys=True)
+
+        # move the config file to the work_dir
+        shutil.move(filename, self.arg.work_dir + '/' + filename)
+
+    def save_configs_to_json(self, filename='configs.json'):
         # Extract configuration parameters
         config_dict = vars(self.arg)
-    
+
         # Save configuration to JSON file
         with open(filename, 'w') as f:
-            json.dump(config_dict, f, indent=4)
-            
-    def save_training_args_to_bin(self, filename):
+            json.dump(config_dict, f, indent=4, sort_keys=True)
+
+        # move the config file to the work_dir
+        shutil.move(filename, self.arg.work_dir + '/' + filename)
+
+    def save_training_args_to_bin(self, filename='training_args.bin'):
         # Save the arg object directly
         torch.save(self.arg, filename)
+
+        # Move the training_args.bin file to the work_dir
+        shutil.move(filename, self.arg.work_dir + '/' + filename)
 
     def start(self):
         if self.arg.phase == 'train':
@@ -653,9 +665,7 @@ if __name__ == '__main__':
     init_seed(0)
     processor = Processor(arg)
     processor.start()
-    processor.save_model_to_bin('pytorch_model.bin')
-    processor.save_config_to_json('processor_config.json')
-    processor.save_training_args_to_bin('training_args.bin')
-    processor.save_configs_to_json('configs.json')
-
-
+    processor.save_model_to_bin()
+    processor.save_processor_config_to_json()
+    processor.save_training_args_to_bin()
+    processor.save_configs_to_json()

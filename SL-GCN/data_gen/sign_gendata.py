@@ -82,8 +82,8 @@ if __name__ == '__main__':
         '--label_path', default='../data/sign/27/train_labels.csv')
     parser.add_argument('--out_folder', default='../data/sign/')
     parser.add_argument('--points', default='27')
+    parser.add_argument('--part', default='train')
 
-    part = 'test'  # 'train', 'val'
     arg = parser.parse_args()
 
     out_path = os.path.join(arg.out_folder, arg.points)
@@ -95,5 +95,5 @@ if __name__ == '__main__':
         arg.data_path,
         arg.label_path,
         out_path,
-        part=part,
+        part=arg.part,
         config=arg.points)
