@@ -563,17 +563,6 @@ class Processor():
         # move the model file to the work_dir
         shutil.move(filename, self.arg.work_dir + '/' + filename)
 
-    def save_processor_config_to_json(self, filename='processor_config.json'):
-        # Extract configuration parameters
-        config_dict = vars(self.arg)
-
-        # Save configuration to JSON file
-        with open(filename, 'w') as f:
-            json.dump(config_dict, f, indent=4, sort_keys=True)
-
-        # move the config file to the work_dir
-        shutil.move(filename, self.arg.work_dir + '/' + filename)
-
     def save_configs_to_json(self, filename='configs.json'):
         # Extract configuration parameters
         config_dict = vars(self.arg)
@@ -666,6 +655,5 @@ if __name__ == '__main__':
     processor = Processor(arg)
     processor.start()
     processor.save_model_to_bin()
-    processor.save_processor_config_to_json()
     processor.save_training_args_to_bin()
     processor.save_configs_to_json()
