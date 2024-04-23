@@ -72,6 +72,6 @@ print("Classification Report")
 print(classification_report(y_true, y_pred))
 
 # save classification report
-with open('./ensesemble_classification_report.txt', 'w') as f:
+with open('./ensemble_classification_report.txt', 'w') as f:
     f.write(classification_report(y_true, y_pred))
 
