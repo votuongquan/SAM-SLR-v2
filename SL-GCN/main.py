@@ -553,6 +553,31 @@ class Processor():
                 print(report)
 
         return np.mean(loss_value)
+    
+    def save_model_to_bin(self, filename):
+        # Save the state_dict of the model to work_dir folder
+        state_dict = self.model.state_dict()
+        torch.save(state_dict, filename)
+        
+    def save_config_to_json(self, filename):
+        # Extract configuration parameters
+        config_dict = vars(self.arg)
+    
+        # Save configuration to JSON file
+        with open(filename, 'w') as f:
+            json.dump(config_dict, f, indent=4)
+            
+    def save_configs_to_json(self, filename):
+        # Extract configuration parameters
+        config_dict = vars(self.arg)
+    
+        # Save configuration to JSON file
+        with open(filename, 'w') as f:
+            json.dump(config_dict, f, indent=4)
+            
+    def save_training_args_to_bin(self, filename):
+        # Save the arg object directly
+        torch.save(self.arg, filename)
 
     def start(self):
         if self.arg.phase == 'train':
@@ -627,3 +652,9 @@ if __name__ == '__main__':
     init_seed(0)
     processor = Processor(arg)
     processor.start()
+    processor.save_model_to_bin('pytorch_model.bin')
+    processor.save_config_to_json('processor_config.json')
+    processor.save_training_args_to_bin('training_args.bin')
+    processor.save_configs_to_json('configs.json')
+
+
