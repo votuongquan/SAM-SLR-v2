@@ -67,37 +67,54 @@ with open('./gcn_ensembled.pkl', 'wb') as f:
     pickle.dump(score_dict, f)
 
 
-while True:
-    print("Number of samples: ", total_num)
-    # Let the user choose randomly an index to show predictions and ground truth
-    index = int(
-        input(f"\nEnter an index to show predictions and ground truth: "))
-    # ensure the index is within the range of the total number of samples
-    while index < 0 or index >= total_num:
-        print("Index out of range. Please enter a valid index.")
-        index = int(
-            input("Enter an index to show predictions and ground truth: "))
-    print("Prediction: ", preds[index])
-    print("Ground Truth: ", label[1, index])
+# while True:
+#     print("Number of samples: ", total_num)
+#     # Let the user choose randomly an index to show predictions and ground truth
+#     index = int(
+#         input(f"\nEnter an index to show predictions and ground truth: "))
+#     # ensure the index is within the range of the total number of samples
+#     while index < 0 or index >= total_num:
+#         print("Index out of range. Please enter a valid index.")
+#         index = int(
+#             input("Enter an index to show predictions and ground truth: "))
+#     print("Prediction: ", preds[index])
+#     print("Ground Truth: ", label[1, index])
 
-    # ask the user if they want to continue
-    cont = input("Do you want to test another one? (yes/no): ")
-    if cont.lower() != "yes":
-        break
+#     # ask the user if they want to continue
+#     cont = input("Do you want to test another one? (yes/no): ")
+#     if cont.lower() != "yes":
+#         break
+
+# get a random index to show predictions and ground truth
+index = random.randint(0, total_num-1)
+print("Sample index: ", index)
+print("Prediction: ", preds[index])
+print("Ground Truth: ", label[1, index])
 
 # Ask the user if they want to see the classification report
-print("Do you want to see the classification report? (yes/no): ")
-show_report = input()
-if show_report.lower() == "yes":
-    # make a classification report
+# print("Do you want to see the classification report? (yes/no): ")
+# show_report = input()
+# if show_report.lower() == "yes":
+#     # make a classification report
 
-    y_true = [int(l) for _, l in label.T]
-    y_pred = preds
-    print("Classification Report")
-    print(classification_report(y_true, y_pred))
+#     y_true = [int(l) for _, l in label.T]
+#     y_pred = preds
+#     print("Classification Report")
+#     print(classification_report(y_true, y_pred))
 
-    # save classification report
-    with open('./ensemble_classification_report.txt', 'w') as f:
-        f.write(classification_report(y_true, y_pred))
+#     # save classification report
+#     with open('./ensemble_classification_report.txt', 'w') as f:
+#         f.write(classification_report(y_true, y_pred))
 
+# print("Ensemble predictions saved in predictions.csv")
+
+
+y_true = [int(l) for _, l in label.T]
+y_pred = preds
+print("Classification Report")
+print(classification_report(y_true, y_pred))
+
+# save classification report
+with open('./ensemble_classification_report.txt', 'w') as f:
+    f.write(classification_report(y_true, y_pred))
 print("Ensemble predictions saved in predictions.csv")
