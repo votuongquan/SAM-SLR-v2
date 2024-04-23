@@ -36,7 +36,12 @@ with open('predictions.csv', 'w') as f:
         name2, r22 = r2[i]
         name3, r33 = r3[i]
         name4, r44 = r4[i]
-        assert name == name1 == name2 == name3 == name4
+        try:
+            assert name == name1 == name2 == name3 == name4
+        except AssertionError:
+            print(
+                f"Assertion failed for names: {name}, {name1}, {name2}, {name3}, {name4}")
+            raise
         mean += r11.mean()
         score = (r11*alpha[0] + r22*alpha[1] + r33 *
                  alpha[2] + r44*alpha[3]) / np.array(alpha).sum()
