@@ -8,13 +8,13 @@ from tqdm import tqdm
 
 label = open('/kaggle/input/dataset-for-slr-v2/27/test_label.pkl', 'rb')
 label = np.array(pickle.load(label))
-r1 = open('/kaggle/working/SAM-SLR-v2/SL-GCN/work_dir/vsl_joint/eval_results/best_acc.pkl', 'rb')
+r1 = open('/kaggle/working/SAM-SLR-v2/SL-GCN/work_dir/vsl_joint_test/eval_results/best_acc.pkl', 'rb')
 r1 = list(pickle.load(r1).items())
-r2 = open('/kaggle/working/SAM-SLR-v2/SL-GCN/work_dir/vsl_bone/eval_results/best_acc.pkl', 'rb')
+r2 = open('/kaggle/working/SAM-SLR-v2/SL-GCN/work_dir/vsl_bone_test/eval_results/best_acc.pkl', 'rb')
 r2 = list(pickle.load(r2).items())
-r3 = open('/kaggle/working/SAM-SLR-v2/SL-GCN/work_dir/vsl_joint_motion/eval_results/best_acc.pkl', 'rb')
+r3 = open('/kaggle/working/SAM-SLR-v2/SL-GCN/work_dir/vsl_joint_motion_test/eval_results/best_acc.pkl', 'rb')
 r3 = list(pickle.load(r3).items())
-r4 = open('/kaggle/working/SAM-SLR-v2/SL-GCN/work_dir/vsl_bone_motion/eval_results/best_acc.pkl', 'rb')
+r4 = open('/kaggle/working/SAM-SLR-v2/SL-GCN/work_dir/vsl_bone_motion_test/eval_results/best_acc.pkl', 'rb')
 r4 = list(pickle.load(r4).items())
 
 alpha = [1.0, 0.9, 0.5, 0.5]  # 51.50
