@@ -1,3 +1,5 @@
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import classification_report
 import argparse
 import pickle
 
@@ -61,3 +63,15 @@ print(mean/len(label[0]))
 with open('./gcn_ensembled.pkl', 'wb') as f:
     score_dict = dict(zip(names, scores))
     pickle.dump(score_dict, f)
+
+# make a classification report
+
+y_true = [int(l) for _, l in label.T]
+y_pred = preds
+print("Classification Report")
+print(classification_report(y_true, y_pred))
+
+# save classification report
+with open('./ensesemble_classification_report.txt', 'w') as f:
+    f.write(classification_report(y_true, y_pred))
+
