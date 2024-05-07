@@ -16,7 +16,7 @@
 Our pretrained models are provided [here](https://drive.google.com/drive/folders/1PYEZVstHXd3msTCye1wllULyPxny_tEc?usp=sharing).
 
 ## Usage
-### Train WLASL:
+### Train:
 ```
 python main.py --config config/VSL/train/train_joint.yaml
 
