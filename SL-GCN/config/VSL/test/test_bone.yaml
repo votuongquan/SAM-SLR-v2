@@ -8,7 +8,7 @@ train_feeder_args:
   debug: False
   random_choose: True
   random_shift: True
-  window_size: 100
+  window_size: 120
   normalization: True
   random_mirror: True
   random_mirror_p: 0.5
@@ -25,7 +25,7 @@ test_feeder_args:
 # model
 model: model.decouple_gcn_attn.Model
 model_args:
-  num_class: 120
+  num_class: 100
   num_point: 27
   num_person: 1
   graph: graph.sign_27.Graph
