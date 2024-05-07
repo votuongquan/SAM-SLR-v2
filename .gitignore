@@ -130,4 +130,4 @@ dmypy.json
 .DS_Store
 
 #ignore SL-GCN/work_dir
-work_dir/
+SAM-SLR-v2\SL-GCN\work_dir
