@@ -129,4 +129,5 @@ dmypy.json
 .pyre/
 .DS_Store
 
-SL-GCN/work_dir/
+#ignore SL-GCN/work_dir
+work_dir/
