@@ -8,7 +8,7 @@ import random
 import numpy as np
 from tqdm import tqdm
 
-label = open('/kaggle/input/inference-for-slr-v2/27/test_label.pkl', 'rb')
+label = open('/kaggle/input/inference-for-slr-v2/27_2/test_label.pkl', 'rb')
 label = np.array(pickle.load(label))
 r1 = open('/kaggle/working/SAM-SLR-v2/SL-GCN/work_dir/vsl_inference_joint_test/eval_results/best_acc.pkl', 'rb')
 r1 = list(pickle.load(r1).items())
