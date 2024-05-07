@@ -8,7 +8,7 @@ train_feeder_args:
   debug: False
   random_choose: True
   random_shift: True
-  window_size: 100
+  window_size: 120
   random_mirror: True
   random_mirror_p: 0.5
   normalization: True
