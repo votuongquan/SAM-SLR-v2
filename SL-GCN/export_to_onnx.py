@@ -10,7 +10,6 @@ from main import init_seed, import_class
 WINDOW_SIZE = 120
 NUM_JOINTS = 27
 NUM_CHANNELS = 3
-MAX_BODY_TRUE = 1
 
 
 def get_args() -> argparse.Namespace:
@@ -142,11 +141,9 @@ def export_to_onnx(
         output_names=['logits'],
         dynamic_axes={
             'x': {
-                0: 'batch_size',
-                1: 'num_channels',
-                2: 'window_size',
-                3: 'num_joints',
-                4: 'max_num_bodies',
+                0: 'window_size',
+                1: 'num_joints',
+                2: 'num_channels',
             },
         },
         do_constant_folding=True,
@@ -172,7 +169,7 @@ def main(args: argparse.Namespace) -> None:
 
     export_to_onnx(
         model=model,
-        input_shape=(1, NUM_CHANNELS, WINDOW_SIZE, NUM_JOINTS, MAX_BODY_TRUE),
+        input_shape=(WINDOW_SIZE, NUM_JOINTS, NUM_CHANNELS),
         output_path=os.path.join(args.output_dir, f'{config["Experiment_name"]}.onnx'),
         device=device,
     )
