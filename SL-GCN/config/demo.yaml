@@ -1,0 +1,4 @@
+source: 000_con_cho.mp4
+model: onnx/VSL_SAM_SLR_V2.onnx
+output_dir: demo/predictions
+id2gloss: gloss.csv
