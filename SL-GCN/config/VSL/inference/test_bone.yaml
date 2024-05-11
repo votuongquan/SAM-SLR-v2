@@ -16,7 +16,7 @@ train_feeder_args:
 
 test_feeder_args:
   data_path: /kaggle/input/inference-for-slr-v2/27_2/test_data_bone.npy
-  label_path: /kaggle/input/inference-for-slr-v2/27_@/test_label.pkl
+  label_path: /kaggle/input/inference-for-slr-v2/27_2/test_label.pkl
   random_mirror: False
   normalization: True
   is_vector: True
