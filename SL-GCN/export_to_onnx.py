@@ -172,7 +172,7 @@ def main(args: argparse.Namespace) -> None:
 
     export_to_onnx(
         model=model,
-        input_shape=(1, NUM_CHANNELS, WINDOW_SIZE, NUM_JOINTS, MAX_BODY_TRUE),
+        input_shape=(1, WINDOW_SIZE, NUM_JOINTS, NUM_CHANNELS, MAX_BODY_TRUE),
         output_path=os.path.join(args.output_dir, f'{config["Experiment_name"]}.onnx'),
         device=device,
     )
