@@ -522,13 +522,8 @@ class Processor():
                     weights = OrderedDict([[k.split('module.')[-1],
                                             v.cpu()] for k, v in state_dict.items()])
 
-                    save_dict = {
-                        "weights": weights,
-                        "optimizer": self.optimizer.state_dict(),
-                        "lr": self.lr,
-                    }
                     torch.save(
-                        save_dict, self.arg.model_saved_name + "_best_model.pt")
+                        weights, self.arg.model_saved_name + "_best_model.pt")
 
                     with open('./work_dir/' + arg.Experiment_name + '/eval_results/classification_report.txt', 'w') as f:
                         f.write(report)
