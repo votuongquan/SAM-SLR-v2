@@ -24,5 +24,6 @@ torch.onnx.export(
             4: 'max_num_bodies',
         },
     },
-    opset_version=12
+    do_constant_folding=True,
+    opset_version=13
 )
