@@ -23,7 +23,6 @@ torch.onnx.export(
             3: 'num_joints',
             4: 'max_num_bodies',
         },
-    
     },
     opset_version=12
 )
