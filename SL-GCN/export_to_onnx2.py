@@ -118,7 +118,7 @@ def export_to_onnx(
     model,
     input_shape: tuple,
     output_path: str,
-    device: str = 'cpu',
+    device: str = 'cuda',
 ) -> None:
     '''
     Export the model to ONNX format.
@@ -142,7 +142,7 @@ def export_to_onnx(
         input_names=['x'],
         output_names=['logits'],
         dynamic_axes={
-            'pixel_values': {
+            'x': {
                 0: 'batch_size',
                 1: 'num_channels',
                 2: 'window_size',
